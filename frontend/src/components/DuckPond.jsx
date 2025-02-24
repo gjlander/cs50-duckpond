@@ -1,14 +1,15 @@
-import { Link } from 'react-router';
+import { Link, useOutletContext } from 'react-router';
 import DuckCard from './DuckCard';
 
-const DuckPond = ({ ducks }) => {
+const DuckPond = () => {
+    const { ducks } = useOutletContext();
     return (
         <section
             id='pond'
             className='flex justify-center flex-wrap gap-4 p-4 w-full'
         >
             {ducks.map((duck) => (
-                <Link key={duck._id} to={`ducks/${duck._id}`}>
+                <Link key={duck.id} to={`ducks/${duck.id}`}>
                     <DuckCard {...duck} />
                 </Link>
             ))}
