@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
 
@@ -11,6 +12,7 @@ NEON_URI = os.environ.get("NEON_URI")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = NEON_URI
+CORS(app)
 db = SQLAlchemy(app)
 api = Api(app)
 
@@ -63,6 +65,12 @@ class DucksRoute(Resource):
 
 class DuckRoute(Resource):
     @marshal_with(duckFields)
+    def get(self, id):
+        duck = Duck.query.filter_by(id=id).first()
+        if not duck:
+            abort(404, message="Duck not found")
+        return duck
+    @marshal_with(duckFields)
     def put(self, id):
         args = duck_args.parse_args()
         duck = Duck.query.filter_by(id=id).first()
@@ -90,4 +98,4 @@ def home():
     return '<h1>Flask REST API </h1>'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
