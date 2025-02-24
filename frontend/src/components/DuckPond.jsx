@@ -3,6 +3,7 @@ import DuckCard from './DuckCard';
 
 const DuckPond = () => {
     const { ducks } = useOutletContext();
+
     return (
         <section
             id='pond'

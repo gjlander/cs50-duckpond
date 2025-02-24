@@ -9,17 +9,33 @@ const getDucks = async () => {
 
     return data;
 };
-
-const getDuckById = async (id) => {
-    const res = await fetch(`${BASE_URL}/${id}`);
+const createDuck = async (formData) => {
+    const res = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(formData),
+    });
     if (!res.ok) throw new Error(`${res.status}. Something went wrong!`);
 
     const data = await res.json();
 
     return data;
 };
-const updateDuck = async (id) => {
-    const res = await fetch(`${BASE_URL}/${id}`);
+
+const deleteDuck = async (id) => {
+    const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error(`${res.status}. Something went wrong!`);
+
+    const data = await res.json();
+
+    return data;
+};
+const updateDuck = async (formData, id) => {
+    const res = await fetch(`${BASE_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(formData),
+    });
     if (!res.ok) throw new Error(`${res.status}. Something went wrong!`);
 
     const data = await res.json();
@@ -27,4 +43,4 @@ const updateDuck = async (id) => {
     return data;
 };
 
-export { getDucks, getDuckById, updateDuck };
+export { getDucks, deleteDuck, updateDuck, createDuck };

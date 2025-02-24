@@ -1,38 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import { getDuckById } from '../data/ducks';
+import { useState } from 'react';
+import { useParams, useNavigate, useOutletContext } from 'react-router';
 import DuckForm from '../components/DuckForm';
 const DuckPage = () => {
-    const [currDuck, setCurrDuck] = useState({});
-    const [editing, setEditing] = useState(false);
     const { duckId } = useParams();
+    const { ducks } = useOutletContext();
+    const currDuck = ducks.find((d) => d.id === +duckId);
+    const [editing, setEditing] = useState(false);
     const navigate = useNavigate();
-    console.log(duckId);
+
+    if (!currDuck) return <div>An error occurred finding your duck!</div>;
+
     const { name, img_url, quote } = currDuck;
 
     const handleGoBack = () => {
         navigate(-1);
     };
 
-    useEffect(() => {
-        let ignore = false;
-        (async () => {
-            try {
-                const duckData = await getDuckById(duckId);
-                if (!ignore) {
-                    setCurrDuck(duckData);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        })();
-
-        return () => {
-            ignore = true;
-        };
-    }, [duckId]);
-
-    if (editing) return <DuckForm duck={currDuck} method='PUT' />;
+    if (editing)
+        return (
+            <DuckForm duck={currDuck} method='PUT' setEditing={setEditing} />
+        );
     return (
         <div className='hero bg-base-100 min-h-screen'>
             <div className='hero-content flex-col lg:flex-row'>
