@@ -5,6 +5,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
+from waitress import serve
 
 
 load_dotenv()
@@ -98,4 +99,6 @@ def home():
     return '<h1>Flask REST API </h1>'
 
 if __name__ == '__main__':
-    app.run()
+    serve(app, host='0.0.0.0', port=5000)
+    # app.run()
+    # serve(app, host='0.0.0.0', port=8000)
