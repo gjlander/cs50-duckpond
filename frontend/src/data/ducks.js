@@ -1,6 +1,8 @@
-const BASE_URL = 'http://localhost:5000/api/ducks';
+const BASE_URL = 'https://cs50-duckpond-backend.onrender.com/api/ducks';
 
 const getDucks = async () => {
+    console.log(BASE_URL);
+
     const res = await fetch(BASE_URL);
     if (!res.ok) throw new Error(`${res.status}. Something went wrong!`);
 
